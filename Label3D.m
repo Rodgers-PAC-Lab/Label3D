@@ -1283,14 +1283,15 @@ classdef Label3D < Animator
                     'framesToLabel - Vector of frame numbers for each video frame.\n' ...
                     'labelGui.exportDannce(''''framesToLabel'''', framesToLabel)'])
             end
-            
-            if p.totalFrames == -1
-                error(['totalFrames must be provided. This is the total number' ...
-                    'of frames in the video to generate a sync variable.' ...
-                    'Not just the number of frames being labeled' ...
-                    'E.g. 90000'])
+            if p.makeSync
+                if p.totalFrames == -1
+                    error(['totalFrames must be provided. This is the total number' ...
+                        'of frames in the video to generate a sync variable.' ...
+                        'Not just the number of frames being labeled' ...
+                        'E.g. 90000'])
+                end
+                totalFrames = p.totalFrames;
             end
-            totalFrames = p.totalFrames;
 
  
             % Load the matched frames files if necessary
@@ -1370,7 +1371,7 @@ classdef Label3D < Animator
                     'data_sampleID', data_sampleID);
             end
 
-            saveFilename = p.saveFilename;
+            saveFilename = p.saveFilename
             if isempty(saveFilename)
                 saveFilename = sprintf('%sLabel3D_dannce.mat', obj.sessionDatestr);
             end
