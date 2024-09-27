@@ -327,9 +327,19 @@ classdef Label3D < Animator
             end
             
             % Initialize data and accounting matrices
-            if ~isempty(obj.markers)
+            % Modified by LW 2024-09-20. MATLAB data structures are
+            % TERRIBLE. I gave up on doing this intelligently
+            if isempty(obj.markers)
                 obj.camPoints = nan(obj.nMarkers, obj.nCams, 2, obj.nFrames);
                 obj.handLabeled2D = nan(obj.nMarkers, obj.nCams, 2, obj.nFrames);
+            elseif ~isempty(obj.markers)
+                markers_mat = zeros(obj.nCams, obj.nFrames, 2, obj.nMarkers);
+                for nCam = 1: obj.nCams
+                    markers_mat(nCam, :, :, :) = obj.markers{nCam};
+                end                   
+                obj.camPoints = permute(markers_mat, [4 1 3 2]);
+                obj.handLabeled2D = permute(markers_mat, [4 1 3 2]);
+
             end
             obj.points3D = nan(obj.nMarkers, 3, obj.nFrames);
             obj.status = zeros(obj.nMarkers, obj.nCams, obj.nFrames);
