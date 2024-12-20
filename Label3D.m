@@ -265,7 +265,7 @@ classdef Label3D < Animator
             if ~isempty(skeleton)
                 obj.skeleton = skeleton;
             end
-            if ~isempty(varargin)
+            if ~isempty(varargin)save
                 set(obj, varargin{:})
             end
             
